@@ -14,3 +14,9 @@ https://www.raspberrypi.com/software/
 <img width="899" alt="image" src="https://user-images.githubusercontent.com/47601801/235332051-b7faf1ff-a7dc-47c7-9a16-2728694834f4.png">
 
 
+# cri
+
+## cgroup dirve
+
+https://kubernetes.io/docs/setup/production-environment/container-runtimes/
+
