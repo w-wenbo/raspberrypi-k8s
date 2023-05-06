@@ -1,0 +1,55 @@
+- name: add apt-key
+  apt_key:
+    url: "{{ item.url }}"
+    keyring: "{{ item.keyring }}"
+    state: present
+  with_items: 
+    - url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ os }}/Release.key
+      keyring: /usr/share/keyrings/libcontainers-archive-keyring.gpg
+    - url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ cri_info.version.split('.')[0:2] | join('.') }}/{{ os }}/Release.key
+      keyring: /usr/share/keyrings/libcontainers-crio-archive-keyring.gpg
+
+- name: Import missing GPG key
+  become: true
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items: 
+    - 648ACFD622F3D138
+    - 0E98404D386FA1D9
+
+- name: add repos
+  apt_repository:
+    repo: "{{ item.repo }}"
+    filename: "{{ item.filename }}"
+    state: present
+  with_items: 
+    - repo: "deb [signed-by=/usr/share/keyrings/libcontainers-archive-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ os }}/ /"
+      filename: devel:kubic:libcontainers:stable
+    - repo: "deb [signed-by=/usr/share/keyrings/libcontainers-crio-archive-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ cri_info.version.split('.')[0:2] | join('.') }}:/{{ cri_info.version }}/{{ os }}/ /"
+      filename: devel:kubic:libcontainers:stable:cri-o:{{ cri_info.version.split('.')[0:2] | join('.') }}:{{ cri_info.version }}
+    - repo: "deb http://deb.debian.org/debian buster-backports main"
+      filename: buster-backports
+
+- name: update apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install libseccomp2 from buster-backports
+  apt:
+    name: libseccomp2
+    state: present
+    update_cache: yes
+    default_release: buster-backports
+
+- name: install package
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+    state: present
+  vars:
+    packages:
+      - libseccomp2
+      - cri-o
+      - cri-o-runc

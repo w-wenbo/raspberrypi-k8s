@@ -1,0 +1,8 @@
+- hosts: raspberrypis
+  become: yes
+  gather_facts: false
+  vars_files:
+    - group_vars/vars.yaml
+  roles:
+    - cri
+    - kube-tools

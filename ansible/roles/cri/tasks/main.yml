@@ -1,0 +1,5 @@
+- name: network config
+  include_tasks: netconfig.yml
+
+- name: install cri
+  include_tasks: cri.yml
