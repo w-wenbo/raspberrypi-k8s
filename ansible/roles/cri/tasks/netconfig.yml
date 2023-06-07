@@ -19,6 +19,9 @@
       value: "1"
     - name: net.bridge.bridge-nf-call-ip6tables
       value: "1"
+  register: sysctl_result
 
 - name: load sysctl
   shell: "sysctl --system"
+  when: sysctl_result.changed
+  

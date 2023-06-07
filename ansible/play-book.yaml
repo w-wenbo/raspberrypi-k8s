@@ -4,5 +4,6 @@
   vars_files:
     - group_vars/vars.yaml
   roles:
+    - osconfig
     - cri
     - kube-tools

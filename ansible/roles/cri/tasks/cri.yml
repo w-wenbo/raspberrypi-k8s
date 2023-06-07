@@ -51,5 +51,25 @@
   vars:
     packages:
       - libseccomp2
+      # - linux-modules-extra-raspi
       - cri-o
       - cri-o-runc
+
+
+- name: Reload systemd daemon
+  become: true
+  systemd:
+    daemon_reload: yes
+
+- name: Enable cri-o service
+  become: true
+  systemd:
+    name: crio
+    enabled: yes
+
+- name: Start cri-o service
+  become: true
+  systemd:
+    name: crio
+    state: started
+

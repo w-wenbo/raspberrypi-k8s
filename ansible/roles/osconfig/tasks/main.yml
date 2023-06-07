@@ -1,0 +1,12 @@
+---
+# tasks file for osconfig
+- name: Add entries to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item.line }}"
+  with_items:
+    - { line: "192.168.2.160 tiger" }
+    - { line: "192.168.2.161 giraffe" }
+    - { line: "192.168.2.162 fox" }
+    - { line: "192.168.2.163 elephant" }
+    - { line: "192.168.2.102 wangwenbo.local"}

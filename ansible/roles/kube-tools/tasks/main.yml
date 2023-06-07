@@ -26,3 +26,21 @@
       - kubelet=1.26.0-00
       - kubeadm=1.26.0-00
       - kubectl=1.26.0-00
+
+
+- name: Reload systemd daemon
+  become: true
+  systemd:
+    daemon_reload: yes
+
+- name: Enable kubelet service
+  become: true
+  systemd:
+    name: kubelet
+    enabled: yes
+
+- name: Start kubelet service
+  become: true
+  systemd:
+    name: kubelet
+    state: started
