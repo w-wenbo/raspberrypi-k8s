@@ -1,4 +1,4 @@
-I0608 00:16:01.094119    6040 version.go:256] remote version is much newer: v1.27.2; falling back to: stable-1.26
+I0608 09:53:15.899774   17568 version.go:256] remote version is much newer: v1.27.2; falling back to: stable-1.26
 [init] Using Kubernetes version: v1.26.5
 [preflight] Running pre-flight checks
 [preflight] Pulling images required for setting up a Kubernetes cluster
@@ -7,7 +7,7 @@ I0608 00:16:01.094119    6040 version.go:256] remote version is much newer: v1.2
 [certs] Using certificateDir folder "/etc/kubernetes/pki"
 [certs] Generating "ca" certificate and key
 [certs] Generating "apiserver" certificate and key
-[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local tiger] and IPs [10.96.0.1 192.168.2.160]
+[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local tiger wangwenbo.local] and IPs [10.96.0.1 192.168.2.160]
 [certs] Generating "apiserver-kubelet-client" certificate and key
 [certs] Generating "front-proxy-ca" certificate and key
 [certs] Generating "front-proxy-client" certificate and key
@@ -33,15 +33,15 @@ I0608 00:16:01.094119    6040 version.go:256] remote version is much newer: v1.2
 [control-plane] Creating static Pod manifest for "kube-scheduler"
 [etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
 [wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
-[apiclient] All control plane components are healthy after 22.007552 seconds
+[apiclient] All control plane components are healthy after 14.015827 seconds
 [upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
 [kubelet] Creating a ConfigMap "kubelet-config" in namespace kube-system with the configuration for the kubelets in the cluster
 [upload-certs] Storing the certificates in Secret "kubeadm-certs" in the "kube-system" Namespace
 [upload-certs] Using certificate key:
-fe04be3164b1161a2949bbe6d3af57502684a7ae93e5d828553bdcee45a7527f
+f0edd57745203d8c7c340bc8d081cdf6c30ee3c43b42f017b62cf5b5a9ff5962
 [mark-control-plane] Marking the node tiger as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
 [mark-control-plane] Marking the node tiger as control-plane by adding the taints [node-role.kubernetes.io/control-plane:NoSchedule]
-[bootstrap-token] Using token: ooy3rf.ob7camiminvkx0oe
+[bootstrap-token] Using token: zwbvjt.mf5dkkme39hw90qn
 [bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
 [bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
 [bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
@@ -68,7 +68,17 @@ You should now deploy a pod network to the cluster.
 Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
   https://kubernetes.io/docs/concepts/cluster-administration/addons/
 
+You can now join any number of the control-plane node running the following command on each as root:
+
+  kubeadm join wangwenbo.local:6443 --token zwbvjt.mf5dkkme39hw90qn \
+	--discovery-token-ca-cert-hash sha256:b09d40b29e597ec2a507fe6d7a4e6019712cbfb33a648e1c11ee41588c0e6467 \
+	--control-plane --certificate-key f0edd57745203d8c7c340bc8d081cdf6c30ee3c43b42f017b62cf5b5a9ff5962
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
+"kubeadm init phase upload-certs --upload-certs" to reload certs afterward.
+
 Then you can join any number of worker nodes by running the following on each as root:
 
-kubeadm join 192.168.2.160:6443 --token ooy3rf.ob7camiminvkx0oe \
-	--discovery-token-ca-cert-hash sha256:94539fe00a00e0c537c83c7f464710888293b483d4172ecec47a195684afc62c 
+kubeadm join wangwenbo.local:6443 --token zwbvjt.mf5dkkme39hw90qn \
+	--discovery-token-ca-cert-hash sha256:b09d40b29e597ec2a507fe6d7a4e6019712cbfb33a648e1c11ee41588c0e6467 

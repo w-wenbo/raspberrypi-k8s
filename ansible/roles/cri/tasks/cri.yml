@@ -51,7 +51,7 @@
   vars:
     packages:
       - libseccomp2
-      # - linux-modules-extra-raspi
+      - linux-modules-extra-raspi
       - cri-o
       - cri-o-runc
 
