@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: mount-demo
+  name: mount-demo
+  namespace: cks
+spec:
+  nodeName: tiger
+  volumes:
+    - name: epconfig
+      hostPath:
+        path: /etc/kubernetes/image-policy
+        type: DirectoryOrCreate
+  containers:
+  - image: nginx
+    name: mount-demo
+    resources: {}
+    volumeMounts:
+      - name: epconfig
+        mountPath: /etc/kubernetes/image-policy
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
